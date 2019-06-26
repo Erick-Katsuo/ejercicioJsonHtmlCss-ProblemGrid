@@ -1,0 +1,106 @@
+<!DOCTYPE html>
+<html>
+    <head>
+        <meta charset="utf-8">
+
+        <title>Our superheroes</title>
+
+        <link href="https://fonts.googleapis.com/css?family=Aldrich" rel="stylesheet"> 
+        <link rel="stylesheet" href="style.css">
+    </head>
+    <body>
+        <header>
+
+        </header>
+
+        <section>
+
+        </section>
+        
+        <footer>
+            
+        </footer>
+
+        <script>
+            var header = document.querySelector('header');
+            var section = document.querySelector('section');
+            var footer = document.querySelector('footer');
+            var requestURL = 'http://localhost:8383/heroes-e/newjson.json';
+            var request = new XMLHttpRequest();
+            request.open('GET', requestURL);
+            request.responseType = 'json';
+            request.send();
+
+            var superHeroes;
+
+            request.onload = function () {
+                superHeroes = request.response;
+                populateHeader(superHeroes);
+                showHeroes(superHeroes);
+            };
+
+            function populateHeader(jsonObj) {
+
+                var myPara = document.createElement('p');
+                myPara.textContent = 'Nombre: ' + jsonObj.movieName + ' // Creado: ' + jsonObj.creado + ' // Desarrollador' + jsonObj.devoloper;
+                
+                /*Agrega id, onclick display none block*/
+                myPara.setAttribute('id', 'titulo');
+                myPara.setAttribute('onclick', "document.getElementById('titulo').style.display='none';");
+                
+                var myImage = document.createElement("img");
+                myImage.setAttribute('src', jsonObj.imageLogo);
+                myImage.setAttribute('width','33%');
+                
+                /*Agrega id, onclick display none block*/
+                myImage.setAttribute('id', 'logo');
+                myImage.setAttribute('onclick', "document.getElementById('logo').style.display='none';");
+                
+                header.appendChild(myImage);
+                header.appendChild(myPara);
+            }
+
+            function showHeroes(jsonObj) {
+                var naves = jsonObj.ships;
+
+                for (var i = 0; i < naves.length; i++) {
+                    var myArticle = document.createElement('article');
+                    var myImage2 = document.createElement("img");
+                    var myH2 = document.createElement('h2');
+                    var myPara1 = document.createElement('p');
+                    var myPara2 = document.createElement('p');
+                    var myPara3 = document.createElement('p');
+                    var myList = document.createElement('ul');
+                    myImage2.setAttribute('src', naves[i].imageLogoShip);
+                    myImage2.setAttribute('width','50%');
+                    
+                    /*Agrega id, onclick display none block*/
+                    myArticle.setAttribute('id', 'titulo'+i);
+                    myArticle.setAttribute('onclick', "document.getElementById('titulo"+i+"').style.display='none';");
+                    
+                    myH2.textContent = naves[i].nave;
+                    myPara1.textContent = 'Habilidad: ' + naves[i].ability;
+                    myPara2.textContent = 'Hp: ' + naves[i].uridium;
+                    myPara3.textContent = 'Caracteristicas';
+
+                    var caracteristicas = naves[i].characteristics;
+                    for (var j = 0; j < caracteristicas.length; j++) {
+                        var listItem = document.createElement('li');
+                        listItem.textContent = caracteristicas[j];
+                        myList.appendChild(listItem);
+                    }
+                    myArticle.appendChild(myImage2);
+                    myArticle.appendChild(myH2);
+                    myArticle.appendChild(myPara1);
+                    myArticle.appendChild(myPara2);
+                    myArticle.appendChild(myPara3);
+                    myArticle.appendChild(myList);
+
+                    section.appendChild(myArticle);
+                    
+                    
+                }
+            }
+        </script>
+    </body>
+</html>
